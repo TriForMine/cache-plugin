@@ -16,12 +16,21 @@ export function enableCachePlugin(bot: Bot): Bot {
   // Get the unmodified transformer.
   const { guild, user, member, channel, message, presence } = bot.transformers;
   // Override the transformer
-  bot.transformers.guild = function (...args) {
+  bot.transformers.guild = function (bot, payload) {
     // Run the unmodified transformer
-    const result = guild(...args);
+    const result = guild(bot, payload);
     // Cache the result
-    if (result)
+    if (result) {
       bot.cache.guilds.set(result.id, result);
+    
+      const channels = payload.guild.channels || [];
+
+      channels.forEach(async (channel) => {
+        const chnl = bot.transformers.channel(bot, { channel, guildId: result.id });
+        await bot.cache.channels.set(chnl.id, chnl);
+      });
+    }
+    
     // Return the result
     return result;
   };
