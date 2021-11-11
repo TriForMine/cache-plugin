@@ -35,11 +35,11 @@ export function enableCachePlugin(bot: Bot): Bot {
     if (result) {
       bot.cache.guilds.set(result.id, result);
     
-      /*const channels = payload.guild.channels || [];
+      const channels = payload.guild.channels || [];
 
       channels.forEach((channel) => {
         bot.transformers.channel(bot, { channel, guildId: result.id });
-      });*/
+      });
     }
     
     // Return the result
