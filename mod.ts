@@ -38,8 +38,7 @@ export function enableCachePlugin(bot: Bot): Bot {
       const channels = payload.guild.channels || [];
 
       channels.forEach((channel) => {
-        const chnl = bot.transformers.channel(bot, { channel, guildId: result.id });
-        bot.cache.channels.set(chnl.id, chnl);
+        bot.transformers.channel(bot, { channel, guildId: result.id });
       });
     }
     
@@ -73,7 +72,7 @@ export function enableCachePlugin(bot: Bot): Bot {
   };
 
   // Override the transformer
-  /*bot.transformers.message = function (...args) {
+  bot.transformers.message = function (...args) {
     // Run the unmodified transformer
     const result = message(...args);
     // Cache the result
@@ -81,7 +80,7 @@ export function enableCachePlugin(bot: Bot): Bot {
      bot.cache.messages.set(result.id, result);
     // Return the result
     return result;
-  };*/
+  };
 
   // Override the transformer
   bot.transformers.presence = function (...args) {
