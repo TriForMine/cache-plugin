@@ -12,9 +12,21 @@ export function enableCachePlugin(bot: Bot): Bot {
   bot.enabledPlugins.add("CACHE");
 
   // CUSTOMIZATION GOES HERE
-
+  
   // Get the unmodified transformer.
   const { guild, user, member, channel, message, presence } = bot.transformers;
+  
+  // Override the transformer
+  bot.transformers.channel = function (...args) {
+    // Run the unmodified transformer
+    const result = channel(...args);
+    // Cache the result
+    if (result)
+      bot.cache.channels.set(result.id, result);
+    // Return the result
+    return result;
+  };
+  
   // Override the transformer
   bot.transformers.guild = function (bot, payload) {
     // Run the unmodified transformer
@@ -56,17 +68,6 @@ export function enableCachePlugin(bot: Bot): Bot {
         bot.transformers.snowflake(`${result.id}${result.guildId}`),
         result,
       );
-    // Return the result
-    return result;
-  };
-
-  // Override the transformer
-  bot.transformers.channel = function (...args) {
-    // Run the unmodified transformer
-    const result = channel(...args);
-    // Cache the result
-    if (result)
-      bot.cache.channels.set(result.id, result);
     // Return the result
     return result;
   };
