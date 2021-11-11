@@ -58,7 +58,7 @@ export function enableCachePlugin(bot: Bot): Bot {
   };
 
   // Override the transformer
-  /*bot.transformers.member = function (...args) {
+  bot.transformers.member = function (...args) {
     // Run the unmodified transformer
     const result = member(...args);
     // Cache the result
@@ -69,7 +69,7 @@ export function enableCachePlugin(bot: Bot): Bot {
       );
     // Return the result
     return result;
-  };*/
+  };
 
   // Override the transformer
   bot.transformers.message = function (...args) {
